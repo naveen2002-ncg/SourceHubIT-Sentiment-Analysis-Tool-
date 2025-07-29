@@ -1,4 +1,8 @@
-# Sentiment Analysis Tool
+(.venv) PS C:\Users\naveen\SENTIMENT ANALYSIS TOOL> python sentiment_analysis.py             
+  File "C:\Users\naveen\SENTIMENT ANALYSIS TOOL\sentiment_analysis.py", line 230             
+    blob = TextBlob(text)                                                                    
+IndentationError: expected an indented block after 'if' statement on line 229                
+(.venv) PS C:\Users\naveen\SENTIMENT ANALYSIS TOOL>        # Sentiment Analysis Tool
 
 A comprehensive sentiment analysis tool that analyzes the sentiment (positive, negative, or neutral) of user input or text data such as tweets, reviews, or comments. The tool provides both a graphical user interface (GUI) and a command-line interface (CLI).
 
