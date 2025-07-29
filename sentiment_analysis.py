@@ -227,7 +227,7 @@ class SentimentAnalysisTool:
                 }
                 
             if method in ["textblob", "both"]:
-    blob = TextBlob(text)
+                blob = TextBlob(text)
                 textblob_polarity = blob.sentiment.polarity
                 textblob_subjectivity = blob.sentiment.subjectivity
                 results["TextBlob"] = {
@@ -262,11 +262,11 @@ class SentimentAnalysisTool:
             return "Neutral"
             
     def _get_textblob_sentiment(self, polarity):
-    if polarity > 0:
+        if polarity > 0:
             return "Positive"
-    elif polarity < 0:
+        elif polarity < 0:
             return "Negative"
-    else:
+        else:
             return "Neutral"
             
     def _analyze_emotions(self, text):
@@ -284,8 +284,9 @@ class SentimentAnalysisTool:
         
         for emotion, keywords in emotions.items():
             score = sum(1 for keyword in keywords if keyword in text_lower)
-            emotion_scores[emotion] = score
-            
+            if score > 0:
+                emotion_scores[emotion] = score
+                
         return emotion_scores
         
     def _get_text_statistics(self, text):
@@ -326,11 +327,11 @@ class SentimentAnalysisTool:
                 output += f"Subjectivity: {data['subjectivity']:.3f}\n\n"
                 
             elif method == "Emotions":
-                output += f"EMOTION ANALYSIS:\n{'-' * 20}\n"
-                for emotion, score in data.items():
-                    if score > 0:
+                if data:
+                    output += f"EMOTION ANALYSIS:\n{'-' * 20}\n"
+                    for emotion, score in data.items():
                         output += f"{emotion.capitalize()}: {score}\n"
-                output += "\n"
+                    output += "\n"
                 
             elif method == "Statistics":
                 output += f"TEXT STATISTICS:\n{'-' * 20}\n"
@@ -390,24 +391,22 @@ class SentimentAnalysisTool:
             self.ax.axvline(x=0, color='gray', linestyle='--', alpha=0.5)
         
         # Add emotion chart if available
-        if "Emotions" in results:
-            emotions = results["Emotions"]
-            if any(score > 0 for score in emotions.values()):
-                # Create emotion chart in a separate figure
-                fig2, ax2 = plt.subplots(figsize=(4, 3))
-                emotion_names = list(emotions.keys())
-                emotion_scores = list(emotions.values())
-                
-                bars = ax2.bar(emotion_names, emotion_scores, color='orange')
-                ax2.set_title('Emotion Analysis')
-                ax2.set_ylabel('Score')
-                
-                # Rotate x-axis labels for better readability
-                plt.setp(ax2.get_xticklabels(), rotation=45, ha='right')
-                
-                # Add the emotion chart to the main window
-                canvas2 = FigureCanvasTkAgg(fig2, self.root)
-                canvas2.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=5)
+        if "Emotions" in results and results["Emotions"]:
+            # Create emotion chart in a separate figure
+            fig2, ax2 = plt.subplots(figsize=(4, 3))
+            emotion_names = list(results["Emotions"].keys())
+            emotion_scores = list(results["Emotions"].values())
+            
+            bars = ax2.bar(emotion_names, emotion_scores, color='orange')
+            ax2.set_title('Emotion Analysis')
+            ax2.set_ylabel('Score')
+            
+            # Rotate x-axis labels for better readability
+            plt.setp(ax2.get_xticklabels(), rotation=45, ha='right')
+            
+            # Add the emotion chart to the main window
+            canvas2 = FigureCanvasTkAgg(fig2, self.root)
+            canvas2.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, padx=20, pady=5)
         
         self.canvas.draw()
         
