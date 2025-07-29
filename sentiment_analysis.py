@@ -227,7 +227,7 @@ class SentimentAnalysisTool:
                 }
                 
             if method in ["textblob", "both"]:
-                blob = TextBlob(text)
+    blob = TextBlob(text)
                 textblob_polarity = blob.sentiment.polarity
                 textblob_subjectivity = blob.sentiment.subjectivity
                 results["TextBlob"] = {
@@ -262,11 +262,11 @@ class SentimentAnalysisTool:
             return "Neutral"
             
     def _get_textblob_sentiment(self, polarity):
-        if polarity > 0:
+    if polarity > 0:
             return "Positive"
-        elif polarity < 0:
+    elif polarity < 0:
             return "Negative"
-        else:
+    else:
             return "Neutral"
             
     def _analyze_emotions(self, text):
